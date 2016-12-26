@@ -1,9 +1,0 @@
-- name: check if Pacemaker service is presented (RHEL6)
-  stat:
-    path=/etc/init/pacemaker.combined.conf
-  register: pacemaker_service_file
-
-- name: stop Pacemaker service if exists (RHEL6)
-  service: name="pacemaker" state=stopped
-  when: pacemaker_service_file.stat.exists == True
-
