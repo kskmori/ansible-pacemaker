@@ -19,9 +19,9 @@
     state=present
     backup=yes
   with_items:
-    - { regexp: "^#Restart=", line: "Restart=on-failure" }
-    - { regexp: "^#RestartSec=", line: "RestartSec=70" }
-    - { regexp: "^#ExecStartPre=", line: "ExecStartPre=/sbin/modprobe softdog soft_margin=6" }
+    - { regexp: "Restart=", line: "Restart=on-failure" }
+    - { regexp: "RestartSec=", line: "RestartSec=70" }
+    - { regexp: "ExecStartPre=", line: "ExecStartPre=/sbin/modprobe softdog soft_margin=6" }
 
 - name: copy pacemaker.service to customize
   shell: creates=/etc/systemd/system/pacemaker.service cp -p /usr/lib/systemd/system/pacemaker.service /etc/systemd/system
