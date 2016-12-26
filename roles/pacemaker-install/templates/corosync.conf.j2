@@ -6,8 +6,8 @@ totem {
          interface {
                  ringnumber: {{ loop.index0 }}
                  bindnetaddr: {{ ic }}
-                 mcastaddr: {{ MCASTADDR }}
-                 mcastport: {{ MCASTPORT }}
+                 mcastaddr: {{ MCASTADDR[loop.index0] }}
+                 mcastport: {{ MCASTPORT[loop.index0] }}
          }
 {% endfor %}
 }
