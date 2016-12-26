@@ -1,0 +1,30 @@
+# "export" prefix is required on RHEL6 (non-systemd) platform
+- name: config /etc/sysconfig/pacemaker
+  lineinfile:
+    dest="/etc/sysconfig/pacemaker"
+    regexp="{{ item.regexp }}"
+    line="{{ item.line }}"
+    state=present
+    backup=yes
+  with_items:
+    - { regexp: "PCMK_fail_fast=", line: "export PCMK_fail_fast=yes" }
+
+## This was necessary on 1.1.12-1.1 or before
+## No longer needed on 1.1.13-1.1 or later because already presented
+#- name: config pacemaker.combined.conf (obsolete)
+#  lineinfile:
+#    dest='/etc/init/pacemaker.combined.conf'
+#    insertbefore="^kill timeout"
+#    line="stop on runlevel [0123456]"
+#    state=present
+
+- name: config pacemaker.combined.conf
+  lineinfile:
+    dest='/etc/init/pacemaker.combined.conf'
+    regexp="{{ item.regexp }}"
+    line="{{ item.line }}"
+    state=present
+    backup=yes
+  with_items:
+    - { regexp: 'modprobe softdog', line: '    [ -c /dev/watchdog ] || modprobe softdog soft_margin=6' }
+    - { regexp: 'pidof corosync \|\| false', line: '    pidof corosync || false' }

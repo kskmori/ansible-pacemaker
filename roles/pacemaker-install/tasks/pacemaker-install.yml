@@ -1,0 +1,19 @@
+---
+- name: Copy Pacemaker repository package to nodes
+  copy:
+    src="{{ item }}"
+    dest="/tmp/"
+  with_fileglob: "pacemaker-repo-1.1.13-1.1.el{{ ansible_distribution_major_version }}.x86_64.rpm"
+  register: rc_copy
+
+- name: install the repository package
+  yum:
+    name="{{ item.dest }}"
+    update_cache=yes
+    state=present
+  with_items: "{{ rc_copy.results }}"
+
+- name: install Pacemaker packages
+  yum:
+    name=pacemaker-all
+    state=latest

@@ -1,0 +1,9 @@
+# ノード間通信LAN(corosync.confのinterface)として設定するネットワークを記述します。
+INTERFACES:
+  - "192.168.101.0"
+  - "192.168.102.0"
+
+MCASTADDR: 239.255.1.1
+MCASTPORT: 5405
+
+SYSLOG_FACILITY: daemon

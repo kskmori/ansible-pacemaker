@@ -1,0 +1,17 @@
+- name: create corosync.conf
+  template:
+    src="corosync.conf.j2"
+    dest="/etc/corosync/corosync.conf"
+
+- name: generate authkey on the first host
+  shell: /usr/sbin/corosync-keygen -l
+  args:
+    creates: /etc/corosync/authkey
+  when: inventory_hostname in groups['hacluster'][0]
+
+- name: distribute authkey to other nodes
+  synchronize:
+    src: /etc/corosync/authkey
+    dest: /etc/corosync/authkey
+  delegate_to: "{{ groups['hacluster'][0] }}"
+

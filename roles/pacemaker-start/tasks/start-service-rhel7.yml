@@ -1,0 +1,4 @@
+- name: start Pacemaker service (RHEL7)
+  service:
+    name="pacemaker"
+    state=started

@@ -1,0 +1,42 @@
+- name: uninstall Pacemaker core packages
+  yum: name="{{ item }}" state=absent
+  with_items:
+    - pacemaker
+    - corosync
+    - libqb
+    - cluster-glue
+    - cluster-glue-libs
+    - resource-agents
+    - pm_crmgen
+    - pm_logconv-cs
+    - pm_diskd
+    - pm_extras
+    - crmsh
+    - pssh
+    - pacemaker-repo
+
+- name: uninstall the Pacemaker repository package and others
+  yum: name="{{ item }}" state=absent
+  with_items:
+    - ldirectord
+    - pm_ctl
+    - pcs
+    - fence-agents
+    - pacemaker-repo
+
+
+- name: remove config files
+  file: name="{{ item }}" state=absent
+  with_items:
+    - /etc/corosync/corosync.conf
+    - /etc/corosync/authkey
+    - /etc/sysconfig/pacemaker
+    - /etc/pm_logconv.conf
+    - /etc/logrotate.d/pacemaker
+    - /etc/systemd/system/pacemaker.service
+    - /etc/systemd/system/corosync.service
+    - /etc/init/pacemaker.combined.conf
+
+- name: remove CIB config if requested
+  file: path=/var/lib/pacemaker state=absent
+  when: "{{ REMOVE_CIB }} | bool"

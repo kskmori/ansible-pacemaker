@@ -1,0 +1,13 @@
+- hosts: localhost
+
+  tasks:
+    - name: Download pacemaker-repo-1.1
+      get_url:
+        url="http://osdn.jp/frs/redir.php?m=iij&f=%2Flinux-ha%2F{{item.rev}}%2F{{item.package}}"
+        dest=./roles/pacemaker-install/files/
+      with_items:
+        - { rev: 63919, package: pacemaker-repo-1.1.13-1.1.el6.x86_64.rpm }
+        - { rev: 63919, package: pacemaker-repo-debuginfo-1.1.13-1.1.el6.x86_64.rpm }
+        - { rev: 63918, package: pacemaker-repo-1.1.13-1.1.el7.x86_64.rpm }
+        - { rev: 63918, package: pacemaker-repo-debuginfo-1.1.13-1.1.el7.x86_64.rpm }
+

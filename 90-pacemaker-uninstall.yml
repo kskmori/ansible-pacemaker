@@ -1,0 +1,20 @@
+- hosts: hacluster
+  user: root
+  max_fail_percentage: 0
+
+  vars:
+    REMOVE_CIB: false
+
+  vars_prompt:
+    - name: "uninstall_ok"
+      prompt: |-
+        Uninstall Pacemaker repository package.
+        Your CIB configuration will be preserved by default.
+        If you do want to remove the CIB configuration, add '-e REMOVE_CIB=true' option.
+        continue ?
+      private: no
+      default: "y"
+
+  roles:
+    - { role: pacemaker-stop,      when: uninstall_ok == "y" }
+    - { role: pacemaker-uninstall, when: uninstall_ok == "y" }

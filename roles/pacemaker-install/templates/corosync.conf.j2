@@ -1,0 +1,22 @@
+totem {
+         version: 2
+         token: 1000
+         rrp_mode: active
+{% for ic in INTERFACES %}
+         interface {
+                 ringnumber: {{ loop.index0 }}
+                 bindnetaddr: {{ ic }}
+                 mcastaddr: {{ MCASTADDR }}
+                 mcastport: {{ MCASTPORT }}
+         }
+{% endfor %}
+}
+logging {
+         syslog_facility: {{ SYSLOG_FACILITY }}
+         debug: off
+}
+quorum {
+         provider: corosync_votequorum
+         expected_votes: {{ groups['hacluster'] | length }}
+}
+
