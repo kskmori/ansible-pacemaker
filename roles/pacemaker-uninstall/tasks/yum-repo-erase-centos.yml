@@ -1,0 +1,5 @@
+- name: restore CentOS repository
+  lineinfile:
+    dest="/etc/yum.repos.d/CentOS-Base.repo"
+    regexp='^exclude=pacemaker'
+    state=absent
