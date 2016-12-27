@@ -1,1 +1,4 @@
 - include: pacemaker-uninstall.yml
+
+- include: yum-repo-erase-centos.yml
+  when: ansible_distribution == 'CentOS'
