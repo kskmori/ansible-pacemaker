@@ -7,11 +7,31 @@
   shell: /usr/sbin/corosync-keygen -l
   args:
     creates: /etc/corosync/authkey
-  when: inventory_hostname in groups['hacluster'][0]
+  when: inventory_hostname == ansible_play_hosts[0]
 
-- name: distribute authkey to other nodes
-  synchronize:
+## synchronize module requires rsync and ssh keys exchange
+#- name: distribute authkey to other nodes
+#  synchronize:
+#    src: /etc/corosync/authkey
+#    dest: /etc/corosync/authkey
+#  delegate_to: "{{ ansible_play_hosts[0] }}"
+
+## alternative way to synchronize authkey to avoid dependency on rsync
+- name: fetch authkey to local temporally
+  fetch:
     src: /etc/corosync/authkey
-    dest: /etc/corosync/authkey
-  delegate_to: "{{ groups['hacluster'][0] }}"
+    dest: "{{ role_path }}/files/authkey"
+    fail_on_missing: yes
+    flat: yes
+  when: inventory_hostname == ansible_play_hosts[0]
+  changed_when: false
 
+- name: distribute authkey to all nodes
+  copy:
+    src="{{ role_path }}/files/authkey"
+    dest=/etc/corosync/authkey
+
+- name: remove copied authkey in local
+  local_action: file name="{{ role_path }}/files/authkey" state=absent
+  run_once: true
+  changed_when: false
