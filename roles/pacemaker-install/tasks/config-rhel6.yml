@@ -26,5 +26,5 @@
     state=present
     backup=yes
   with_items:
-    - { regexp: 'modprobe softdog', line: '    [ -c /dev/watchdog ] || modprobe softdog soft_margin=6' }
+    - { regexp: 'modprobe softdog', line: '    [ -c /dev/watchdog ] || modprobe softdog' }
     - { regexp: 'pidof corosync \|\| false', line: '    pidof corosync || false' }
