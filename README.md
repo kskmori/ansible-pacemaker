@@ -9,16 +9,21 @@
 
 以下のページに記載されているバージョン・手順を Ansible Playbook にしたものです。
 
-* 対象バージョン: pacemaker-repo-1.1.13-1.1
-* 手順: [Pacemaker-1.1.13-1.1 リポジトリパッケージ](http://linux-ha.osdn.jp/wp/archives/4154)
+* 対象バージョン: pacemaker-repo-1.1.14-1.1
+* 手順: [Pacemaker-1.1.14-1.1 リポジトリパッケージ](http://linux-ha.osdn.jp/wp/archives/4490)
+
+以前のバージョンを利用する場合は、対応するタグを checkout して使ってください。
+
+* pacemaker-repo-1.1.14-1.1: タグ [1.1.14-1.1](https://github.com/kskmori/ansible-pacemaker/tree/1.1.14-1.1)
+* pacemaker-repo-1.1.13-1.1: タグ [1.1.13-1.1](https://github.com/kskmori/ansible-pacemaker/tree/1.1.13-1.1)
 
 ## 前提条件
 
 この　playbook を使うには以下の設定をあらかじめ行っておいてください。
 
 * OSメディアもしくはリポジトリが参照できるように /etc/yum.repo.d を設定しておくこと(OS標準の依存パッケージを自動的にインストールするため)
-* 構築対象のノード同士で root の ssh 鍵交換を実行しておくこと(authkeyのコピーを行うため)
 * OSおよびネットワークの設定は別途完了済みであること。
+* firewalld サービスを停止しておくこと(もしくは corosync に必要な通信を許可しておくこと)。
 
 ## 設定
 
