@@ -9,11 +9,12 @@
 
 以下のページに記載されているバージョン・手順を Ansible Playbook にしたものです。
 
-* 対象バージョン: pacemaker-repo-1.1.14-1.1
-* 手順: [Pacemaker-1.1.14-1.1 リポジトリパッケージ](http://linux-ha.osdn.jp/wp/archives/4490)
+* 対象バージョン: pacemaker-repo-1.1.15-1.1
+* 手順: [Pacemaker-1.1.15-1.1 リポジトリパッケージ](http://linux-ha.osdn.jp/wp/archives/4591)
 
 以前のバージョンを利用する場合は、対応するタグを checkout して使ってください。
 
+* pacemaker-repo-1.1.15-1.1: タグ [1.1.15-1.1](https://github.com/kskmori/ansible-pacemaker/tree/1.1.15-1.1)
 * pacemaker-repo-1.1.14-1.1: タグ [1.1.14-1.1](https://github.com/kskmori/ansible-pacemaker/tree/1.1.14-1.1)
 * pacemaker-repo-1.1.13-1.1: タグ [1.1.13-1.1](https://github.com/kskmori/ansible-pacemaker/tree/1.1.13-1.1)
 
