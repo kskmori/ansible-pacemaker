@@ -1,0 +1,23 @@
+## Corosync 通信にユニキャスト通信(udpu)を使用する場合の設定例
+
+# ノード間通信LAN(corosync.confのinterface)として設定するネットワークを記述します。
+INTERFACES:
+  - 192.168.101.0
+  - 192.168.102.0
+
+# ポート番号はINTERFACESと同じ数だけ記述します。
+MCASTPORT:
+  - 5405
+  - 5405
+
+# ユニキャスト通信を使用する場合 udpu を指定します。
+# udpu を指定した場合、NODELIST 設定が必要です。また MCASTADDR 設定は無視されます。
+TRANSPORT: udpu
+
+# ユニキャストアドレスのリストをノード数分記述します。
+# 1ノード分の中にはINTERFACESと同じ数だけアドレスを記述します。
+NODELIST:
+  - [ 192.168.101.27, 192.168.102.27 ]
+  - [ 192.168.101.28, 192.168.102.28 ]
+
+SYSLOG_FACILITY: daemon
