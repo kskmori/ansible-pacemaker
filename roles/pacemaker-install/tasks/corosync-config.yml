@@ -1,7 +1,14 @@
-- name: create corosync.conf
+- name: create corosync.conf for multicast
   template:
     src="corosync.conf.j2"
     dest="/etc/corosync/corosync.conf"
+  when: TRANSPORT != "udpu"
+
+- name: create corosync.conf for unicast
+  template:
+    src="corosync.conf-udpu.j2"
+    dest="/etc/corosync/corosync.conf"
+  when: TRANSPORT == "udpu"
 
 - name: generate authkey on the first host
   shell: /usr/sbin/corosync-keygen -l

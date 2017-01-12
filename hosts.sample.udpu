@@ -1,0 +1,7 @@
+[hacluster-udpu]
+centos73-1
+centos73-2
+
+[hacluster:children]
+hacluster-udpu
+
