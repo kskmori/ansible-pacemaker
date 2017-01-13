@@ -3,11 +3,11 @@ totem {
          token: 1000
          rrp_mode: active
          transport: udpu
-{% for ic in INTERFACES %}
+{% for ring in INTERFACES %}
          interface {
                  ringnumber: {{ loop.index0 }}
-                 bindnetaddr: {{ ic }}
-                 mcastport: {{ MCASTPORT[loop.index0] }}
+                 bindnetaddr: {{ ring['bindnetaddr'] }}
+                 mcastport: {{ ring['mcastport'] }}
          }
 {% endfor %}
 }
