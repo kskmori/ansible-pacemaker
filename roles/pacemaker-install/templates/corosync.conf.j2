@@ -2,12 +2,12 @@ totem {
          version: 2
          token: 1000
          rrp_mode: active
-{% for ic in INTERFACES %}
+{% for ring in INTERFACES %}
          interface {
                  ringnumber: {{ loop.index0 }}
-                 bindnetaddr: {{ ic }}
-                 mcastaddr: {{ MCASTADDR }}
-                 mcastport: {{ MCASTPORT }}
+                 bindnetaddr: {{ ring['bindnetaddr'] }}
+                 mcastaddr: {{ ring['mcastaddr'] }}
+                 mcastport: {{ ring['mcastport'] }}
          }
 {% endfor %}
 }
