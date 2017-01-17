@@ -1,0 +1,13 @@
+# ノード間通信LAN(corosync.confのinterface)として設定するネットワークを記述します。
+INTERFACES:
+ - { bindnetaddr: 192.168.101.0, mcastaddr: 239.255.1.1, mcastport: 5405 }
+ - { bindnetaddr: 192.168.102.0, mcastaddr: 239.255.1.2, mcastport: 5405 }
+
+### override /etc/corosync/corosync.conf
+SYSLOG_FACILITY: local1
+
+### pm_logconv configuration
+PM_LOGCONV_CONFIG:
+  "attribute_ping": "not_defined default_ping_set or default_ping_set lt 100"
+  "attribute_diskd_inner": "not_defined diskcheck_status_internal or diskcheck_status_internal eq ERROR"
+  "act_rsc": "vip-master, vip-rep"

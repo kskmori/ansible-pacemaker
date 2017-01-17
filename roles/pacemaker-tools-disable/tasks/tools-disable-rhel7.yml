@@ -1,0 +1,8 @@
+- name: disable services for Pacemaker additional tools (RHEL7)
+  service:
+    name="{{ item }}"
+    state=stopped
+    enabled=no
+  with_items:
+    - ifcheckd
+    - pm_logconv

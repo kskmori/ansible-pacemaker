@@ -1,0 +1,16 @@
+- name: create /etc/pm_logconv.conf
+  shell: cp /etc/pm_logconv.conf.sample /etc/pm_logconv.conf 
+  args:
+    creates: /etc/pm_logconv.conf
+
+- name: configure /etc/pm_logconv.conf
+  ini_file:
+    dest: '/etc/pm_logconv.conf'
+    section: 'Settings'
+    option: "{{ item.key }}"
+    value: "{{ item.value }}"
+    backup: yes
+  with_dict: "{{ PM_LOGCONV_CONFIG }}"
+  when: PM_LOGCONV_CONFIG is defined
+
+    

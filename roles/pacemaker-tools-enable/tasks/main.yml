@@ -1,0 +1,12 @@
+- include: tools-config.yml
+
+- include: rsyslog-config-rhel6.yml
+  when: ansible_distribution_major_version == '6'
+- include: rsyslog-config-rhel7.yml
+  when: ansible_distribution_major_version == '7'
+
+- include: tools-enable-rhel6.yml
+  when: ansible_distribution_major_version == '6'
+- include: tools-enable-rhel7.yml
+  when: ansible_distribution_major_version == '7'
+

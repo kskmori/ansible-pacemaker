@@ -1,0 +1,8 @@
+- name: enable services for Pacemaker additional tools (RHEL7)
+  service:
+    name="{{ item }}"
+    state=started
+    enabled=yes
+  with_items:
+    - ifcheckd
+    - pm_logconv

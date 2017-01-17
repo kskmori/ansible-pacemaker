@@ -1,0 +1,58 @@
+- name: config /etc/sysconfig/pacemaker to sepalate cluster logs
+  lineinfile:
+    dest="/etc/sysconfig/pacemaker"
+    regexp="{{ item.regexp }}"
+    line="{{ item.line }}"
+    state=present
+    backup=yes
+  with_items:
+    - { regexp: "PCMK_logfile=", line: "export PCMK_logfile=none" }
+    - { regexp: "PCMK_logfacility=", line: "export PCMK_logfacility={{ SYSLOG_FACILITY }}" }
+    - { regexp: "PCMK_logpriority=", line: "export PCMK_logpriority=info" }
+
+- name: config /etc/rsyslog.conf; exclude cluster logs from /var/log/message
+  lineinfile:
+    dest="/etc/rsyslog.conf"
+    regexp="{{ item.regexp }}"
+    line="{{ item.line }}"
+    state=present
+    backup=yes
+  with_items:
+    - { regexp: '/var/log/messages$', line: '*.info;mail.none;authpriv.none;cron.none;{{ SYSLOG_FACILITY }}.none    /var/log/messages' }
+  notify: restart rsyslog
+
+- name: config /etc/rsyslog.conf; sepalate cluster logs
+  lineinfile:
+    dest="/etc/rsyslog.conf"
+    regexp="{{ item.regexp }}"
+    line="{{ item.line }}"
+    insertafter='^local7'
+    state=present
+    backup=yes
+  with_items:
+    - { regexp: "^{{ SYSLOG_FACILITY }}.info ", line: '{{ SYSLOG_FACILITY }}.info                 /var/log/ha-log;RSYSLOG_TraditionalFileFormat' }
+  notify: restart rsyslog
+
+- name: config /etc/rsyslog.conf; disable ratelimit
+  lineinfile:
+    dest="/etc/rsyslog.conf"
+    regexp="{{ item.regexp }}"
+    line="{{ item.line }}"
+    insertafter="GLOBAL DIRECTIVES"
+    state=present
+    backup=yes
+  with_items:
+    - { regexp: '\$SystemLogRateLimitInterval ', line: '$SystemLogRateLimitInterval 0' }
+  notify: restart rsyslog
+
+- name: config /etc/logrotate.d/syslog
+  lineinfile:
+    dest='/etc/logrotate.d/syslog'
+    line="{{ item.line }}"
+    insertafter="{{ item.after }}"
+    state=present
+    backup=yes
+  with_items:
+    - { line: '/var/log/ha-log', after: '/var/log/spooler' }
+    - { line: '    missingok', after: '{' } # presented in RHEL7 by default
+  notify: restart rsyslog

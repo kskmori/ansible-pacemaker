@@ -1,0 +1,57 @@
+- name: restore /etc/sysconfig/pacemaker to default
+  lineinfile:
+    dest="/etc/sysconfig/pacemaker"
+    regexp="{{ item.regexp }}"
+    line="{{ item.line }}"
+    state=present
+    backup=yes
+  with_items:
+    - { regexp: "PCMK_logfile=", line: "# PCMK_logfile=/var/log/pacemaker.log" }
+    - { regexp: "PCMK_logfacility=", line: "# PCMK_logfacility=none|daemon|user|local0|local1|local2|local3|local4|local5|local6|local7" }
+    - { regexp: "PCMK_logpriority=", line: "# PCMK_logpriority=emerg|alert|crit|error|warning|notice|info|debug" }
+
+- name: restore /etc/rsyslog.conf for /var/log/messages
+  lineinfile:
+    dest="/etc/rsyslog.conf"
+    regexp="{{ item.regexp }}"
+    line="{{ item.line }}"
+    state=present
+    backup=yes
+  with_items:
+    - { regexp: '/var/log/messages$', line: '*.info;mail.none;authpriv.none;cron.none                /var/log/messages' }
+  notify: restart rsyslog
+
+- name: restore /etc/rsyslog.conf for additional configurations
+  lineinfile:
+    dest="/etc/rsyslog.conf"
+    regexp="{{ item }}"
+    state=absent
+    backup=yes
+  with_items:
+    - '/var/log/ha-log;RSYSLOG_TraditionalFileFormat$'
+    - '\$SystemLogRateLimitInterval '
+    - '\$imjournalRatelimitInterval '
+  notify: restart rsyslog
+
+- name: restore /etc/systemd/journald.conf for ratelimit
+  lineinfile:
+    dest="/etc/systemd/journald.conf"
+    regexp="{{ item.regexp }}"
+    line="{{ item.line }}"
+    insertafter='[Journal]'
+    state=present
+    backup=yes
+  with_items:
+    - { regexp: 'RateLimitInterval', line: '#RateLimitInterval=30s' }
+  notify: restart journald
+
+- name: restore /etc/logrotate.d/syslog
+  lineinfile:
+    dest='/etc/logrotate.d/syslog'
+    line="{{ item }}"
+    state=absent
+    backup=yes
+  with_items:
+    - '/var/log/ha-log'
+#    - '    missingok'  # presented in RHEL7 by default
+  notify: restart rsyslog
