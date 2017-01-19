@@ -21,3 +21,13 @@
   yum:
     name=pacemaker-all
     state=latest
+
+# This should not be necessary because it's the default status, but
+# make sure it for just in case user had changed the systemd status on RHEL7.
+# On RHEL6, it would be always disabled by restoring pacemaker.combined.conf .
+- name: make sure Pacemaker services are disabled in systemd
+  service: name="{{ item }}" enabled=no
+  with_items:
+    - pacemaker
+    - corosync
+  when: ansible_distribution_major_version == '7'
