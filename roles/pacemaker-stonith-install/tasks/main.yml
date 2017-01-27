@@ -1,0 +1,13 @@
+- name: install dependent packages for STONITH plugins
+  yum:
+    name="{{ item }}"
+    update_cache=yes
+    state=present
+  with_items:
+    - ipmitool
+    - libvirt-client
+
+# currently this playbook does not do this automatically. (can be improved)
+- name: notes for SSH key exchange
+  debug:
+    msg: "NOTE: Make sure that you can SSH to the libvirt host without passwords to use external/libvirt plugin"
