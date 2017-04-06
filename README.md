@@ -34,6 +34,8 @@
   * インベントリファイル。hosts.sample を参考に構築対象ホスト名を修正して作成してください。
 * group_vars/hacluster
   * ノード間通信に使用するネットワークアドレス、マルチキャストアドレス・ポート、ログ出力先を設定します。
+  * group_vars/hacluster.sample を参考に修正して作成してください。
+  * _※ 2017/01/13[(e7dd854)](https://github.com/kskmori/ansible-pacemaker/commit/e7dd854)以降、haclusterの設定書式をよりシンプルに変更しました。これより前に作成された方は注意願います。__
 
 ## 実行例
 
