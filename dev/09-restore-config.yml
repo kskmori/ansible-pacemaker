@@ -1,0 +1,15 @@
+- hosts: hacluster
+  user: root
+  max_fail_percentage: 0
+
+  tasks:
+
+  - name: backup config
+    copy:
+      src: "{{ playbook_dir }}/backup-config/{{ inventory_hostname }}{{ item }}"
+      dest: "{{ item }}"
+    with_items:
+      - /etc/sysconfig/pacemaker
+      - /etc/rsyslog.conf
+      - /etc/systemd/journald.conf
+      - /etc/logrotate.d/syslog

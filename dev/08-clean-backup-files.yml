@@ -1,0 +1,23 @@
+- hosts: hacluster
+  user: root
+  max_fail_percentage: 0
+
+  tasks:
+
+  - name: remove backup files created by ansible playbook
+    # 2100 year problem here!
+    shell: "rm -f {{ item }}.20*~"
+    args:
+      removes: "{{ item }}.20*~"
+    with_items:
+      - /etc/sysconfig/pacemaker
+      - /etc/rsyslog.conf
+      - /etc/systemd/journald.conf
+      - /etc/logrotate.d/syslog
+      - /etc/systemd/system/pacemaker.service
+      - /etc/systemd/system/corosync.service
+      - /etc/init/pacemaker.combined.conf
+      - /etc/yum.repos.d/CentOS-Base.repo
+      - /etc/pm_logconv.conf
+      - /etc/corosync/corosync.conf
+
