@@ -12,11 +12,13 @@
 * 対象バージョン: pacemaker-repo-1.1.15-1.1
 * 手順: [Pacemaker-1.1.15-1.1 リポジトリパッケージ](http://linux-ha.osdn.jp/wp/archives/4591)
 
-以前のバージョンを利用する場合は、対応するタグを checkout して使ってください。
+以前のバージョンを利用する場合は、対応するブランチを checkout して使ってください。
 
-* pacemaker-repo-1.1.15-1.1: タグ [1.1.15-1.1](https://github.com/kskmori/ansible-pacemaker/tree/1.1.15-1.1)
-* pacemaker-repo-1.1.14-1.1: タグ [1.1.14-1.1](https://github.com/kskmori/ansible-pacemaker/tree/1.1.14-1.1)
-* pacemaker-repo-1.1.13-1.1: タグ [1.1.13-1.1](https://github.com/kskmori/ansible-pacemaker/tree/1.1.13-1.1)
+* pacemaker-repo-1.1.15-1.1: ブランチ [branch-1.1.15-1.1](https://github.com/kskmori/ansible-pacemaker/tree/branch-1.1.15-1.1)
+* pacemaker-repo-1.1.14-1.1: ブランチ [branch-1.1.14-1.1](https://github.com/kskmori/ansible-pacemaker/tree/branch-1.1.14-1.1)
+* pacemaker-repo-1.1.13-1.1: ブランチ [branch-1.1.13-1.1](https://github.com/kskmori/ansible-pacemaker/tree/branch-1.1.13-1.1)
+
+_※ 2017/04/14追記: 以前はタグと記載していましたが、タグではなくブランチを checkout してください。各バージョンごとに必要な修正や更新などをそれぞれのブランチごとに反映しています。_
 
 ## 前提条件
 
@@ -35,7 +37,7 @@
 * group_vars/hacluster
   * ノード間通信に使用するネットワークアドレス、マルチキャストアドレス・ポート、ログ出力先を設定します。
   * group_vars/hacluster.sample を参考に修正して作成してください。
-  * _※ 2017/01/13[(e7dd854)](https://github.com/kskmori/ansible-pacemaker/commit/e7dd854)以降、haclusterの設定書式をよりシンプルに変更しました。これより前に作成された方は注意願います。__
+  * _※ 2017/01/13[(e7dd854)](https://github.com/kskmori/ansible-pacemaker/commit/e7dd854)以降、haclusterの設定書式をよりシンプルに変更しました。これより前に作成された方は注意願います。_
 
 ## 実行例
 
