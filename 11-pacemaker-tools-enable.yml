@@ -3,4 +3,5 @@
   max_fail_percentage: 0
 
   roles:
+    - { role: common } # use common handlers
     - { role: pacemaker-tools-enable }
