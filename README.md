@@ -9,11 +9,12 @@
 
 以下のページに記載されているバージョン・手順を Ansible Playbook にしたものです。
 
-* 対象バージョン: pacemaker-repo-1.1.15-1.1
-* 手順: [Pacemaker-1.1.15-1.1 リポジトリパッケージ](http://linux-ha.osdn.jp/wp/archives/4591)
+* 対象バージョン: pacemaker-repo-1.1.16-1.1
+* 手順: [Pacemaker-1.1.16-1.1 リポジトリパッケージ](http://linux-ha.osdn.jp/wp/archives/4618)
 
 以前のバージョンを利用する場合は、対応するブランチを checkout して使ってください。
 
+* pacemaker-repo-1.1.16-1.1: ブランチ [branch-1.1.16-1.1](https://github.com/kskmori/ansible-pacemaker/tree/branch-1.1.16-1.1)
 * pacemaker-repo-1.1.15-1.1: ブランチ [branch-1.1.15-1.1](https://github.com/kskmori/ansible-pacemaker/tree/branch-1.1.15-1.1)
 * pacemaker-repo-1.1.14-1.1: ブランチ [branch-1.1.14-1.1](https://github.com/kskmori/ansible-pacemaker/tree/branch-1.1.14-1.1)
 * pacemaker-repo-1.1.13-1.1: ブランチ [branch-1.1.13-1.1](https://github.com/kskmori/ansible-pacemaker/tree/branch-1.1.13-1.1)
@@ -65,11 +66,11 @@ _※ 2017/04/14追記: 以前はタグと記載していましたが、タグで
   * Pacemaker リポジトリパッケージを全てアンインストールします。確認のプロンプトが出ます。
   * デフォルトでは Pacemaker のCRMクラスタ設定(CIB設定)は削除しませんが、`-e REMOVE_CIB=true` オプションを付与することでCRMクラスタ設定も全て削除します。
 
->     $ ansible-playbook -i hosts 90-pacemaker-uninstall.yml 
+>     $ ansible-playbook -i hosts 99-pacemaker-uninstall.yml
 
   * CRMクラスタ設定も全て削除する場合
 
->     $ ansible-playbook -i hosts -e REMOVE_CIB=true 9-pacemaker-uninstall.yml
+>     $ ansible-playbook -i hosts -e REMOVE_CIB=true 99-pacemaker-uninstall.yml
 
 
 ## 補足
