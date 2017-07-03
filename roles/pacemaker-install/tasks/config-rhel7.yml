@@ -36,3 +36,20 @@
   with_items:
     - { regexp: "killall -TERM corosync", line: "ExecStopPost=/bin/sh -c 'pidof crmd || killall -TERM corosync'" }
 
+### allow communitation ports if firewalld is in use
+- name: check if firewalld is enabled
+  systemd:
+    name: firewalld
+  register: firewalld
+
+- name: allow Pacemaker/Corosync communication through firewalld (permanent)
+  command: firewall-cmd --permanent --add-service=high-availability
+  register: result
+  changed_when: '"ALREADY_ENABLED" not in result.stderr'
+  when: firewalld.status.ActiveState == "active"
+
+- name: allow Pacemaker/Corosync communication through firewalld (runtime)
+  command: firewall-cmd --add-service=high-availability
+  register: result
+  changed_when: '"ALREADY_ENABLED" not in result.stderr'
+  when: firewalld.status.ActiveState == "active"

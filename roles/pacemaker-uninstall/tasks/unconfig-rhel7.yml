@@ -1,0 +1,17 @@
+### remove firewalld configuration
+- name: check if firewalld is enabled
+  systemd:
+    name: firewalld
+  register: firewalld
+
+- name: remove firewalld configuration for Pacemaker/Corosync (permanent)
+  command: firewall-cmd --permanent --remove-service=high-availability
+  register: result
+  changed_when: '"NOT_ENABLED" not in result.stderr'
+  when: firewalld.status.ActiveState == "active"
+
+- name: remove firewalld configuration for Pacemaker/Corosync (runtime)
+  command: firewall-cmd --remove-service=high-availability
+  register: result
+  changed_when: '"NOT_ENABLED" not in result.stderr'
+  when: firewalld.status.ActiveState == "active"
