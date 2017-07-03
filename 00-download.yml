@@ -5,6 +5,7 @@
       get_url:
         url="https://osdn.net/frs/redir.php?m=iij&f=%2Flinux-ha%2F{{item.rev}}%2F{{item.package}}"
         dest=./roles/pacemaker-install/files/
+        timeout=20
       with_items:
         - { rev: 67817, package: pacemaker-repo-1.1.16-1.1.el7.x86_64.rpm }
         - { rev: 67817, package: pacemaker-repo-debuginfo-1.1.16-1.1.el7.x86_64.rpm }
