@@ -1,5 +1,5 @@
 - hosts: hacluster
-  user: root
+  become: true
   max_fail_percentage: 0
 
   tasks:
