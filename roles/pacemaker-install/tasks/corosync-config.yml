@@ -39,6 +39,7 @@
     dest=/etc/corosync/authkey
 
 - name: remove copied authkey in local
+  become: false
   local_action: file name="{{ role_path }}/files/authkey" state=absent
   run_once: true
   changed_when: false
