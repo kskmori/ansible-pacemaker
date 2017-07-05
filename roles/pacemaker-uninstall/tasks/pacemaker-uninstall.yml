@@ -39,4 +39,4 @@
 
 - name: remove CIB config if requested
   file: path=/var/lib/pacemaker state=absent
-  when: "{{ REMOVE_CIB }} | bool"
+  when: REMOVE_CIB | bool
