@@ -26,5 +26,14 @@
     state=present
     backup=yes
   with_items:
-    - { regexp: 'modprobe softdog', line: '    [ -c /dev/watchdog ] || modprobe softdog' }
     - { regexp: 'pidof corosync \|\| false', line: '    pidof corosync || false' }
+
+- name: config corosync.conf
+  lineinfile:
+    dest='/etc/init/corosync.conf'
+    regexp="{{ item.regexp }}"
+    line="{{ item.line }}"
+    state=present
+    backup=yes
+  with_items:
+    - { regexp: 'modprobe softdog', line: '    [ -c /dev/watchdog ] || modprobe softdog' }
