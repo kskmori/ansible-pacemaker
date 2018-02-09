@@ -52,27 +52,67 @@ _※ 2017/04/14追記: 以前はタグと記載していましたが、タグで
 * (2) Pacemaker リポジトリパッケージのインストール
   * Pacemaker / Corosync のインストールと必要最低限の設定を行います。
 
->     $ ansible-playbook -i hosts 10-pacemaker-install.yml 
+>     $ ansible-playbook -u root -i hosts 10-pacemaker-install.yml
 
 * (3) Pacemaker の起動
   * Pacemaker クラスタを起動します。
 
->     $ ansible-playbook -i hosts 20-pacemaker-start.yml 
+>     $ ansible-playbook -u root -i hosts 20-pacemaker-start.yml
 
 * (4) Pacemaker の停止
   * Pacemaker クラスタを停止します。
 
->     $ ansible-playbook -i hosts 30-pacemaker-stop.yml 
+>     $ ansible-playbook -u root -i hosts 30-pacemaker-stop.yml
 
 * (5) Pacemaker リポジトリパッケージのアンインストール
   * Pacemaker リポジトリパッケージを全てアンインストールします。確認のプロンプトが出ます。
   * デフォルトでは Pacemaker のCRMクラスタ設定(CIB設定)は削除しませんが、`-e REMOVE_CIB=true` オプションを付与することでCRMクラスタ設定も全て削除します。
 
->     $ ansible-playbook -i hosts 99-pacemaker-uninstall.yml
+>     $ ansible-playbook -u root -i hosts 99-pacemaker-uninstall.yml
 
   * CRMクラスタ設定も全て削除する場合
 
->     $ ansible-playbook -i hosts -e REMOVE_CIB=true 99-pacemaker-uninstall.yml
+>     $ ansible-playbook -u root -i hosts -e REMOVE_CIB=true 99-pacemaker-uninstall.yml
+
+## Linux-HA Japan 追加パッケージ利用例
+
+本 playbook には、Linux-HA Japan リポジトリパッケージに含まれる pm_logconv-cs (Pacemakerログ解析支援ツール)を利用する場合の playbook も含まれています。
+
+これは下記の pm_logconv-cs のドキュメントに記載されている設定を playbook 化したものです。
+詳細は pm_logconv-cs の README.md を参照してください。
+
+* Pacemakerログ解析支援ツール（pm_logconv-cs）
+  * https://github.com/linux-ha-japan/pm_logconv-cs/blob/master/README.md
+
+### 設定
+
+設定のサンプルは group_vars/hacluster.pm_logconv を参照してください。
+
+### 実行例
+
+* (1) Pacemaker リポジトリパッケージのインストール・pm_logconv-cs の有効化
+  * Pacemaker / Corosync のインストールと必要最低限の設定を行います。
+  * 続けて、pm_logconv-cs 利用に必要な /etc/rsyslog.conf 等の設定を行います。
+
+>     $ ansible-playbook -u root -i hosts 10-pacemaker-install.yml
+>     $ ansible-playbook -u root -i hosts 11-pacemaker-tools-enable.yml
+
+* (2) Pacemaker の起動
+  * Pacemaker クラスタを起動します。
+  * /var/log/pm_logconv.out にログが出力されることを確認します。
+
+>     $ ansible-playbook -u root -i hosts 20-pacemaker-start.yml
+
+* (3) Pacemaker の停止
+  * Pacemaker クラスタを停止します。
+
+>     $ ansible-playbook -u root -i hosts 30-pacemaker-stop.yml
+
+* (4) pm_logconv-cs設定の無効化・Pacemaker リポジトリパッケージのアンインストール
+  * pm_logconv-cs 有効化のために設定した /etc/rsyslog.conf 等を元に戻します(元に戻す必要がない場合は実行は必須ではありません)。
+
+>     $ ansible-playbook -u root -i hosts 98-pacemaker-tools-disable.yml
+>     $ ansible-playbook -u root -i hosts 99-pacemaker-uninstall.yml
 
 
 ## 補足

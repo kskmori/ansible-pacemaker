@@ -4,11 +4,13 @@ INTERFACES:
  - { bindnetaddr: 192.168.102.0, mcastaddr: 239.255.1.2, mcastport: 5405 }
 
 ### override /etc/corosync/corosync.conf
+# pm_logconv を利用する場合は、local1 (もしくは他の未使用の local*)を設定します。
 SYSLOG_FACILITY: local1
 
-### pm_logconv configuration
-PM_LOGCONV_CONFIG:
-  "attribute_ping": "not_defined default_ping_set or default_ping_set lt 100"
-  "attribute_diskd": "not_defined diskcheck_status or diskcheck_status eq ERROR"
-  "attribute_diskd_inner": "not_defined diskcheck_status_internal or diskcheck_status_internal eq ERROR"
-  "act_rsc": "prmEx, prmPg"
+### pm_logconv configuration (optional)
+# インストールと同時に /etc/pm_logconv.conf のリソース設定を行う場合、下記を設定します。
+#PM_LOGCONV_CONFIG:
+#  "attribute_ping": "not_defined default_ping_set or default_ping_set lt 100"
+#  "attribute_diskd": "not_defined diskcheck_status or diskcheck_status eq ERROR"
+#  "attribute_diskd_inner": "not_defined diskcheck_status_internal or diskcheck_status_internal eq ERROR"
+#  "act_rsc": "prmEx, prmPg"
