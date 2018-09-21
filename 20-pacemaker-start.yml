@@ -2,5 +2,11 @@
   become: true
   max_fail_percentage: 0
 
+  # Running with --tags=init-cib,all option will clear the entire CIB
+  # configration before start. It does not prompt you. USE WITH CARE!
+
   roles:
-    - { role: pacemaker-start }
+    - role: pacemaker-init-cib
+      tags: never,init-cib
+
+    - role: pacemaker-start

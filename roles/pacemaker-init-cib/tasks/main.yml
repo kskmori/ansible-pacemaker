@@ -1,0 +1,4 @@
+- name: erase the CIB
+  shell: rm -f /var/lib/pacemaker/cib/* /var/lib/pacemaker/pengine/*
+  args:
+    warn: false
