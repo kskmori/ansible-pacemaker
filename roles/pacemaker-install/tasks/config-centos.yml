@@ -1,0 +1,24 @@
+- name: exclude Pacemaker packages in CentOS repository
+  ini_file:
+    dest: /etc/yum.repos.d/CentOS-Base.repo
+    section: "{{ item }}"
+    option: exclude
+    value: pacemaker* corosync* resource-agents* crmsh* cluster-glue* libqb* fence-agents* pcs*
+    no_extra_spaces: yes
+    backup: yes
+  with_items:
+    - 'base'
+    - 'updates'
+
+- name: install NetworkManager-config-server for RHEL compatibility
+  yum:
+    name: NetworkManager-config-server
+    state: present
+  register: installed
+  when: ansible_distribution_major_version == '7'
+
+- name: restart NetworkManager if changed
+  systemd:
+    name: NetworkManager
+    state: restarted
+  when: ansible_distribution_major_version == '7' and installed.changed
