@@ -1,5 +1,5 @@
 ---
-- include: yum-repo-centos.yml
+- include: config-centos.yml
   when: ansible_distribution == 'CentOS'
 
 - include: pacemaker-install.yml
