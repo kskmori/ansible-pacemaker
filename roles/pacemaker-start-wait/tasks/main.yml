@@ -1,0 +1,7 @@
+- name: wait for Pacemaker startup completion
+  shell: crmadmin -qS {{ inventory_hostname }}
+  register: result
+  retries: 20
+  delay: 5
+  changed_when: false
+  until: result.rc == 0 and (result.stderr == "S_IDLE" or result.stderr == "S_NOT_DC")

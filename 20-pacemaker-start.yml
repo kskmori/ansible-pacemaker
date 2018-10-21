@@ -10,3 +10,6 @@
       tags: never,init-cib
 
     - role: pacemaker-start
+
+    - role: pacemaker-start-wait
+      tags: never,start-wait
