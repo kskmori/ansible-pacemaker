@@ -1,0 +1,16 @@
+## # firewall-cmd --direct --add-rule ipv4 filter OUTPUT 2 -p udp --dport={{ mcastport }} -j DROP
+## # firewall-cmd --add-rich-rule='rule family="ipv4" port port="{{ mcastport }}" protocol="udp" drop'
+- name: disconnect Corosync communication (via firewalld)
+  shell: |
+    firewall-cmd --direct --add-rule ipv4 filter OUTPUT 2 -p udp --dport={{ INTERFACES[0].mcastport }} -j DROP
+    firewall-cmd --add-rich-rule='rule family="ipv4" port port="{{ INTERFACES[0].mcastport }}" protocol="udp" drop'
+  register: result
+  changed_when: '"ALREADY_ENABLED" not in result.stderr'
+
+# assumes same mcastport are used for all interfaces
+# we should do something like this to get the ports list:
+#
+# map() is available Python 2.7 or later - we still try to support RHEL6 yet...
+#- debug:
+#    msg: "{{ INTERFACES|map(attribute='mcastport')|unique }}"
+

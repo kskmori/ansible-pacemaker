@@ -1,0 +1,9 @@
+## # firewall-cmd --direct --remove-rule ipv4 filter OUTPUT 2 -p udp --dport={{ mcastport }} -j DROP
+## # firewall-cmd --remove-rich-rule='rule family="ipv4" port port="{{ mcastport }}" protocol="udp" drop'
+- name: reconnect Corosync communication (via firewalld)
+  shell: |
+    firewall-cmd --direct --remove-rule ipv4 filter OUTPUT 2 -p udp --dport={{ INTERFACES[0].mcastport }} -j DROP
+    firewall-cmd --remove-rich-rule='rule family="ipv4" port port="{{ INTERFACES[0].mcastport }}" protocol="udp" drop'
+  register: result
+  changed_when: '"NOT_ENABLED" not in result.stderr'
+

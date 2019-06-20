@@ -116,6 +116,27 @@ _※ 2017/04/14追記: 以前はタグと記載していましたが、タグで
 >     $ ansible-playbook -u root -i hosts 99-pacemaker-uninstall.yml
 
 
+## 動作試験用 playbook
+
+インターコネクトLAN(Corosync通信)切断の擬似故障を発生させる手順を playbook 化したものです。
+STONITH機能の動作試験を行う場合などに使用できます。
+
+インターコネクトLAN切断の擬似故障を発生させる場合、 Corosync の仕様上 ifdown は利用できません。iptables 等によって通信を双方向切断する必要があります。本 playbook では iptables により擬似故障を発生させています。
+
+* 参考情報
+  * [CentOS 7 で Pacemaker を利用する場合の注意点](http://linux-ha.osdn.jp/wp/archives/4798) 3. Corosync の動作について
+
+### 試験実行例
+
+* (1) インターコネクトLANの切断故障を擬似的に発生させる。
+  * 擬似故障を発生させるノードを -l オプションで指定します。
+
+>      $ ansible-playbook -u root -i hosts -l centos73-2 80-test-link-disconnect.yml
+
+* (2) (1)で発生させた擬似故障を元に戻す。
+
+>      $ ansible-playbook -u root -i hosts -l centos73-2 81-test-link-reconnect.yml
+
 ## 補足
 
 * この playbook には Pacemaker を単体で起動するために必要最低限の手順のみが含まれています。実際のクラスタ環境構築を全て自動化するには、ネットワーク設定や監視対象のアプリケーションなども含め適宜手順を追加して利用してください。

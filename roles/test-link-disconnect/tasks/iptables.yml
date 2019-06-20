@@ -1,0 +1,29 @@
+- name: obtain NIC names
+  shell: >-
+    ip -o route get {{ item.bindnetaddr }} | sed -e "s/^.*\sdev\s\([^\s]*\)\s.*$/\1/"
+  register: ip_result
+  changed_when: false
+  with_items: "{{ INTERFACES }}"
+
+# equivalent to {{ ip_result.results|map('stdout')|list }}
+# map() is available in Python 2.7 or later, but we still try to support RHEL6 yet.
+- name: map NIC names list
+  set_fact:
+    nics: "{{ nics|default([]) + [ item.stdout ] }}"
+  changed_when: false
+  with_items: "{{ ip_result.results }}"
+  loop_control:
+    label: "{{ item.stdout }}" # to suppress too verbose logs
+
+#- debug:
+#    var: nics
+
+## # iptables -I INPUT -i {{ NIC }} -j DROP ; iptables -I OUTPUT -o {{ NIC }} -j DROP
+- name: reconnect Corosync communication (via iptables)
+  shell: >-
+    iptables -I INPUT -i {{ item }} -j DROP ; iptables -I OUTPUT -o {{ item }} -j DROP
+  register: result
+  with_items: "{{ nics }}"
+
+#- debug:
+#    var: result
