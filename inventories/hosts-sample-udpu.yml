@@ -1,0 +1,25 @@
+hacluster:
+  hosts:
+    # Pacemaker をインストールするホスト名を記述します。
+    centos73-1:
+    centos73-2:
+  vars:
+    ## Corosync 通信にユニキャスト通信(udpu)を使用する場合の設定例
+    # ユニキャスト通信を使用する場合 udpu を指定します。
+    TRANSPORT: udpu
+
+    # ノード間通信LAN(corosync.confのinterface)として設定するネットワークを記述します。
+    # ユニキャスト通信(udpu)の場合、mcastaddr 設定は不要です。
+    INTERFACES:
+      - { bindnetaddr: 192.168.101.0, mcastport: 5405 }
+      - { bindnetaddr: 192.168.102.0, mcastport: 5405 }
+
+    # ユニキャスト通信(udpu)の場合、NODELIST 設定が必要です。
+    # ユニキャストアドレスのリストをノード数分記述します。
+    # 1ノード分の中にはINTERFACESと同じ数だけアドレスを記述します。
+    NODELIST:
+      - [ 192.168.101.27, 192.168.102.27 ]
+      - [ 192.168.101.28, 192.168.102.28 ]
+
+    # pm_logconv を利用する場合は、local1 (もしくは他の未使用の local*)を設定します。
+    SYSLOG_FACILITY: daemon

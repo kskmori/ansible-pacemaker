@@ -1,0 +1,13 @@
+hacluster:
+  hosts:
+    # Pacemaker をインストールするホスト名を記述します。
+    centos73-1:
+    centos73-2:
+  vars:
+    # ノード間通信LAN(corosync.confのinterface)として設定するネットワークを記述します。
+    INTERFACES:
+      - { bindnetaddr: 192.168.101.0, mcastaddr: 239.255.1.1, mcastport: 5405 }
+      - { bindnetaddr: 192.168.102.0, mcastaddr: 239.255.1.2, mcastport: 5405 }
+
+    # pm_logconv を利用する場合は、local1 (もしくは他の未使用の local*)を設定します。
+    SYSLOG_FACILITY: daemon
