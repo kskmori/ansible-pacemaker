@@ -10,3 +10,9 @@ gathering = smart
 retry_files_enabled = False
 
 #inventory = ./inventories/hosts-sample.yml
+
+
+## enable this option on Cygwin environment
+## ref. https://everythingshouldbevirtual.com/automation/ansible-using-ansible-on-windows-via-cygwin/
+#[ssh_connection]
+#ssh_args = -o ControlMaster=no
