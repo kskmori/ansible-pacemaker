@@ -7,7 +7,7 @@
         dest=./roles/pacemaker-install/files/
         timeout=20
       with_items:
-        - { rev: 70298, package: pacemaker-repo-1.1.19-1.1.el7.x86_64.rpm }
-        - { rev: 70298, package: pacemaker-repo-debuginfo-1.1.19-1.1.el7.x86_64.rpm }
-        - { rev: 70299, package: pacemaker-repo-1.1.19-1.1.el6.x86_64.rpm }
-        - { rev: 70299, package: pacemaker-repo-debuginfo-1.1.19-1.1.el6.x86_64.rpm }
+        - { rev: 71663, package: pacemaker-repo-1.1.21-1.1.el7.x86_64.rpm }
+        - { rev: 71663, package: pacemaker-repo-debuginfo-1.1.21-1.1.el7.x86_64.rpm }
+        - { rev: 71664, package: pacemaker-repo-1.1.21-1.1.el6.x86_64.rpm }
+        - { rev: 71664, package: pacemaker-repo-debuginfo-1.1.21-1.1.el6.x86_64.rpm }
