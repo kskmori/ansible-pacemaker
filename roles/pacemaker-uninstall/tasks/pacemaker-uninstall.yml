@@ -1,28 +1,30 @@
 - name: uninstall Pacemaker core packages
-  yum: name="{{ item }}" state=absent
-  with_items:
-    - pacemaker
-    - corosync
-    - libqb
-    - cluster-glue
-    - cluster-glue-libs
-    - resource-agents
-    - pm_crmgen
-    - pm_logconv-cs
-    - pm_diskd
-    - pm_extras
-    - crmsh
-    - pssh
-    - pacemaker-repo
+  yum:
+    state: absent
+    name:
+      - pacemaker
+      - corosync
+      - libqb
+      - cluster-glue
+      - cluster-glue-libs
+      - resource-agents
+      - pm_crmgen
+      - pm_logconv-cs
+      - pm_diskd
+      - pm_extras
+      - crmsh
+      - pssh
+      - pacemaker-repo
 
 - name: uninstall the Pacemaker repository package and others
-  yum: name="{{ item }}" state=absent
-  with_items:
-    - ldirectord
-    - pm_ctl
-    - pcs
-    - fence-agents
-    - pacemaker-repo
+  yum:
+    state: absent
+    name:
+      - ldirectord
+      - pm_ctl
+      - pcs
+      - fence-agents
+      - pacemaker-repo
 
 
 - name: remove config files
