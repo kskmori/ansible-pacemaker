@@ -3,7 +3,7 @@
     dest: /etc/yum.repos.d/CentOS-Base.repo
     section: "{{ item }}"
     option: exclude
-    value: pacemaker* corosync* resource-agents* crmsh* cluster-glue* libqb* fence-agents* pcs*
+    value: pacemaker* corosync* resource-agents* crmsh* cluster-glue* libqb* fence-agents* pcs-*
     no_extra_spaces: yes
     backup: yes
   with_items:
