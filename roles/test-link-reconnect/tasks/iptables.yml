@@ -1,6 +1,6 @@
 - name: obtain NIC names
   shell: >-
-    ip -o route get {{ item.bindnetaddr }} | sed -e "s/^.*\sdev\s\([^\s]*\)\s.*$/\1/"
+    ip -o route get {{ item.bindnetaddr }} | sed -e "s/^.*\sdev\s\(\S*\)\s.*$/\1/"
   register: ip_result
   changed_when: false
   with_items: "{{ INTERFACES }}"
@@ -19,7 +19,7 @@
 #    var: nics
 
 ## # iptables -D INPUT -i {{ NIC }} -j DROP ; iptables -D OUTPUT -o {{ NIC }} -j DROP
-- name: disconnect Corosync communication (via iptables)
+- name: reconnect Corosync communication (via iptables)
   shell: >-
     iptables -D INPUT -i {{ item }} -j DROP ; iptables -D OUTPUT -o {{ item }} -j DROP
   register: result
