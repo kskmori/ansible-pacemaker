@@ -1,0 +1,67 @@
+# 20.5 Quorum devices
+
+# 20.5.1 Installing quorum device packages
+#
+## # yum install pcs corosync-qnetd
+#
+- name: install qnetd packages
+  yum:
+    name: ['pcs', 'corosync-qnetd']
+    state: present
+#
+## # systemctl start pcsd.service
+## # systemctl enable pcsd.service
+#
+- name: enable pcsd service
+  service:
+    name: pcsd.service
+    state: started
+    enabled: yes
+
+#
+# This step is apparently missing in the RHEL official documents
+# otherwise 'pcs host auth' on the cluster node would fail later.
+#
+## # passwd hacluster
+#
+- name: set hacluster user password
+  user:
+    name: hacluster
+    password: "{{ HACLUSTER_PASSWORD|password_hash('sha512') }}"
+
+# 20.5.2 Configuring a quorum device
+
+# 1. configure the quorum device
+#
+## # pcs qdevice setup model net --enable --start
+#
+- name: enable and start qdevice
+  command: >
+    pcs qdevice setup model net --enable --start
+  register: result
+  changed_when: result.rc == 0
+  failed_when: result.rc != 0 and "has been already initialized" not in result.stderr
+
+# 2. enable the ports on the firewall
+#
+## # firewall-cmd --permanent --add-service=high-availability
+## # firewall-cmd --add-service=high-availability
+#
+- name: check if firewalld is enabled
+  command: firewall-cmd --state
+  changed_when: false
+  failed_when: false
+  register: firewalld_state
+
+- name: allow Pacemaker/Corosync communication through firewalld (permanent)
+  command: firewall-cmd --permanent --add-service=high-availability
+  register: result
+  changed_when: '"ALREADY_ENABLED" not in result.stderr'
+  when: firewalld_state.rc == 0
+
+- name: allow Pacemaker/Corosync communication through firewalld (runtime)
+  command: firewall-cmd --add-service=high-availability
+  register: result
+  changed_when: '"ALREADY_ENABLED" not in result.stderr'
+  when: firewalld_state.rc == 0
+

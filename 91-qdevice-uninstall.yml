@@ -1,0 +1,14 @@
+- hosts: hacluster
+  become: true
+  max_fail_percentage: 0
+
+  roles:
+    - role: qdevice-uninstall
+
+- hosts: qnetd
+  become: true
+  max_fail_percentage: 0
+
+  roles:
+    - role: qnetd-uninstall
+

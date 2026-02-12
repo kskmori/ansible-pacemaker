@@ -1,0 +1,14 @@
+- hosts: qnetd
+  become: true
+  max_fail_percentage: 0
+
+  roles:
+    - role: qnetd-install
+
+- hosts: hacluster
+  become: true
+  max_fail_percentage: 0
+
+  roles:
+    - role: qdevice-install
+

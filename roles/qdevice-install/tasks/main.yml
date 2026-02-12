@@ -1,0 +1,40 @@
+# 20.5 Quorum devices
+
+# 20.5.1 Installing quorum device packages
+#
+## # yum install corosync-qdevice
+#
+- name: install qdevice package
+  yum:
+    name: 'corosync-qdevice'
+    state: present
+
+# 20.5.2 Configuring a quorum device
+- set_fact:
+#    QDEVICE_HOST: "{{ groups['qnetd'][0] }}"
+    QDEVICE_ADDR: "{{ hostvars[groups['qnetd'][0]]['qnetd_addr'] }}"
+
+# 3. authenticate user hacluster
+#
+## # pcs host auth QDEVICE -u hacluster -p PASSWORD
+#
+#  NOTE: addr= option does not work for qdevice on RHEL8.0 (at least)
+#        needs to specify a same reachable address _both_ for
+#        'pcs host auth' and 'pcs quorum device add'
+#
+#  WARN: password will be appeared on the command line. Be secure!
+- name: authenticate user hacluster
+  command: >
+    pcs host auth
+    {{ QDEVICE_ADDR }}
+    -u hacluster -p {{ HACLUSTER_PASSWORD }}
+  when: inventory_hostname == ansible_play_hosts[0]
+
+# 4. Add the quorum device to the cluster
+#
+## # pcs quorum device add model net host=QDEVICE algorithm=ffsplit
+#
+- name: add the quorum device
+  command: >
+    pcs quorum device add model net host={{ QDEVICE_ADDR }} algorithm=ffsplit
+  when: inventory_hostname == ansible_play_hosts[0]
