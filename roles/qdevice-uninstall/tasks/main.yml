@@ -1,4 +1,4 @@
-# 20.5.4.2 Removing a quorum device
+# 28.4.2. Removing a quorum device
 #
 ## # pcs quorum device remove
 #
@@ -9,6 +9,7 @@
   changed_when: result.rc == 0
   failed_when: result.rc != 0 and "no quorum device is defined" not in result.stderr
   when: inventory_hostname == ansible_play_hosts[0]
+  tags: qdevice-remove
 
 #
 #- name: deauth qdevice host

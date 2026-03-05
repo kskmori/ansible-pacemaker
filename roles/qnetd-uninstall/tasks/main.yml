@@ -4,7 +4,7 @@
   failed_when: false
   register: pcs_state
 
-# 20.5.4.3 Destroying a quorum device
+# 28.4.3. Destroying a quorum device
 #
 ## # pcs qdevice destroy net
 #

@@ -17,3 +17,7 @@
 - include_tasks: fence_sbd.yml
   when: FENCE_AGENTS is defined and 'fence_sbd' in FENCE_AGENTS
   tags: always
+
+- include_tasks: fence_watchdog.yml
+  when: FENCE_AGENTS is defined and 'fence_watchdog' in FENCE_AGENTS
+  tags: always

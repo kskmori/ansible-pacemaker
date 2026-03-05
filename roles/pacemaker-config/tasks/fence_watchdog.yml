@@ -1,0 +1,9 @@
+### configuration to use fence_watchdog / SBD self-fencing
+#
+# enable the SBD self-fencing watchdog timeout
+## # pcs stonith sbd enable SBD_WATCHDOG_TIMEOUT={{ SBD_WATCHDOG_TIMEOUT }}
+#
+- name: enable the SBD self-fencing watchdog timeout
+  command: "pcs stonith sbd enable SBD_WATCHDOG_TIMEOUT={{ SBD_WATCHDOG_TIMEOUT }}"
+  when: inventory_hostname == ansible_play_hosts[0]
+  tags: sbd_enable

@@ -1,18 +1,27 @@
-# 20.5 Quorum devices
-
-# 20.5.1 Installing quorum device packages
+# Reference document:
+#   Red Hat Enterprise Linux 9
+#   Confiburing and managing high availabillity clusters
 #
-## # yum install corosync-qdevice
+#   https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html-single/configuring_and_managing_high_availability_clusters/index#assembly_configuring-quorum-devices-configuring-and-managing-high-availability-clusters
+#
+# Chapter 28. Configuring quorum devices
+
+# 28.1. Installing quorum device packages
+#
+## # dnf install corosync-qdevice
 #
 - name: install qdevice package
   yum:
     name: 'corosync-qdevice'
+    enablerepo: highavailability
     state: present
 
-# 20.5.2 Configuring a quorum device
+# 28.2. Configuring a quorum device
+#
 - set_fact:
 #    QDEVICE_HOST: "{{ groups['qnetd'][0] }}"
     QDEVICE_ADDR: "{{ hostvars[groups['qnetd'][0]]['qnetd_addr'] }}"
+  tags: always
 
 # 3. authenticate user hacluster
 #
@@ -37,4 +46,8 @@
 - name: add the quorum device
   command: >
     pcs quorum device add model net host={{ QDEVICE_ADDR }} algorithm=ffsplit
+  register: result
+  changed_when: result.rc == 0
+  failed_when: result.rc != 0 and "quorum device is already defined" not in result.stderr
   when: inventory_hostname == ansible_play_hosts[0]
+  tags: qdevice-add

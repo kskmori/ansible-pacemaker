@@ -1,12 +1,19 @@
-# 20.5 Quorum devices
-
-# 20.5.1 Installing quorum device packages
+# Reference document:
+#   Red Hat Enterprise Linux 9
+#   Confiburing and managing high availabillity clusters
 #
-## # yum install pcs corosync-qnetd
+#   https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html-single/configuring_and_managing_high_availability_clusters/index#assembly_configuring-quorum-devices-configuring-and-managing-high-availability-clusters
+#
+# Chapter 28. Configuring quorum devices
+
+# 28.1. Installing quorum device packages
+#
+## # dnf install pcs corosync-qnetd
 #
 - name: install qnetd packages
   yum:
     name: ['pcs', 'corosync-qnetd']
+    enablerepo: highavailability
     state: present
 #
 ## # systemctl start pcsd.service
@@ -25,12 +32,10 @@
 ## # passwd hacluster
 #
 - name: set hacluster user password
-  user:
-    name: hacluster
-    password: "{{ HACLUSTER_PASSWORD|password_hash('sha512') }}"
+  shell: echo "hacluster:{{ HACLUSTER_PASSWORD }}" | chpasswd
 
-# 20.5.2 Configuring a quorum device
-
+# 28.2. Configuring a quorum device
+#
 # 1. configure the quorum device
 #
 ## # pcs qdevice setup model net --enable --start

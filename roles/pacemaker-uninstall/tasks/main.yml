@@ -6,6 +6,7 @@
   changed_when: false
   failed_when: false
   register: pcs_state
+  tags: destroy
 
 - block:
   - name: destroy cluster
@@ -99,11 +100,25 @@
 - name: compose no_proxy list
   set_fact:
     NO_PROXY_LIST: >-
-      {%- for node in groups['hacluster']|sort -%}
-        {{ node }},{{ hostvars[node]['manage_addr']}},
-      {%- endfor -%}
-- name: remove no_proxy for pcs communication
-  lineinfile:
+      {{ groups['hacluster']
+         + (groups['hacluster'] | map('extract', hostvars, 'manage_addr') | list)
+         + groups['qnetd']|default([])
+         + (groups['qnetd']|default([]) | map('extract', hostvars, 'qnetd_addr') | list)
+      }}
+  tags: no_proxy
+- name: remove no_proxy for pcs communication (with optional comma)
+  ansible.builtin.lineinfile:
     path: /etc/environment
-    regexp: ^export no_proxy={{ NO_PROXY_LIST }}
-    state: absent
+    regexp: '^(.*no_proxy=.*?)(?:{{ item }},?)(.*)$'
+    line: '\1\2'
+    backrefs: yes
+  loop: "{{ NO_PROXY_LIST }}"
+  tags: no_proxy
+- name: Remove each host from NO_PROXY (with optional comma)
+  ansible.builtin.lineinfile:
+    path: /etc/environment
+    regexp: '^(.*NO_PROXY=.*?)(?:{{ item }},?)(.*)$'
+    line: '\1\2'
+    backrefs: yes
+  loop: "{{ NO_PROXY_LIST }}"
+  tags: no_proxy
