@@ -1,0 +1,12 @@
+[baseos]
+name=Red Hat Enterprise Linux $releasever - BaseOS
+baseurl=file:///media/BaseOS
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+[appstream]
+name=Red Hat Enterprise Linux $releasever - AppStream
+baseurl=file:///media/AppStream
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release

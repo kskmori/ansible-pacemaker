@@ -1,0 +1,15 @@
+- name: unmount the HA ISO image
+  become: yes
+  ansible.builtin.mount:
+    path: /mnt/HighAvailability
+    state: unmounted
+
+- name: unmount BaseOS/AppStream ISO image
+  become: yes
+  ansible.builtin.mount:
+    path: /media
+    state: unmounted
+
+- name: dnf cleanup
+  become: yes
+  command: dnf clean all

@@ -1,0 +1,4 @@
+- include_tasks: repo-rhel.yml
+  when: ansible_facts['distribution'] == 'RedHat'
+#- include_tasks: repo-rocky.yml
+#  when: ansible_facts['distribution'] == 'Rocky'

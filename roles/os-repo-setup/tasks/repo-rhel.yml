@@ -1,0 +1,39 @@
+- name: setup yum repository using ISO media for RHEL
+  copy:
+    src: "{{ item }}"
+    dest: /etc/yum.repos.d/
+  with_items:
+    - rhel-media.repo
+    - rhel-media-ha.repo
+
+- name: copy HA ISO image
+  copy:
+    src: "{{ HA_ISO }}"
+    dest: /var/tmp/
+
+- name: check if the BaseOS/AppStream ISO media is already mounted
+  command: mountpoint -q /media
+  register: os_mount_check
+  changed_when: false
+  failed_when: false
+
+- name: mount BaseOS/AppStream ISO image - requires to attach the ISO image as /dev/sr0
+  command: mount -o ro /dev/sr0 /media
+  when: os_mount_check.rc != 0
+
+- name: create mount point for the HA ISO image
+  file:
+    path: /mnt/HighAvailability
+    state: directory
+
+- name: check if HA ISO is already mounted
+  command: mountpoint -q /mnt/HighAvailability
+  register: ha_mount_check
+  changed_when: false
+  failed_when: false
+
+# Note: use command: instead of mount: module to avoid adding an entry to /etc/fstab
+- name: mount the HA ISO image
+  become: yes
+  command: mount -o loop,ro /var/tmp/{{ HA_ISO }} /mnt/HighAvailability
+  when: ha_mount_check.rc != 0

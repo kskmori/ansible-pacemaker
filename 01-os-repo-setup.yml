@@ -1,0 +1,7 @@
+- hosts: hacluster, qnetd
+  become: true
+  max_fail_percentage: 0
+  gather_facts: true
+
+  roles:
+    - role: os-repo-setup
